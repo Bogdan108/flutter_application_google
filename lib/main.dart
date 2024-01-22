@@ -1,9 +1,28 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:translator/translator.dart';
+
+import 'pages/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyAppBloc());
+}
+
+class MyAppBloc extends StatelessWidget {
+  const MyAppBloc({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Bloc demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -126,6 +145,7 @@ class GeneratorPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           BigCard(pair: pair),
+          BigCard(pair: pair),
           const SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -173,7 +193,7 @@ class FavoritesPage extends StatelessWidget {
         for (var pair in appState.favorites)
           ListTile(
             leading: Icon(Icons.favorite),
-            title: Text(pair.asLowerCase),
+            title: Text("${pair.first} ${pair.second}"),
           ),
       ],
     );
@@ -181,12 +201,13 @@ class FavoritesPage extends StatelessWidget {
 }
 
 class BigCard extends StatelessWidget {
-  const BigCard({
+  BigCard({
     super.key,
     required this.pair,
   });
+  final String out = "";
   final WordPair pair;
-
+  final GoogleTranslator translator = GoogleTranslator();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -198,7 +219,7 @@ class BigCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          pair.asLowerCase,
+          "${pair.first} ${pair.second} - ${(pair.first)}",
           style: style,
           semanticsLabel: "${pair.first} ${pair.second}",
         ),
